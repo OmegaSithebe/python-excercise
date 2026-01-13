@@ -107,8 +107,11 @@ censor_e("heat")    #-> 'h*at'
 
 def fizz_buzz(max_num):
     for i in range(1, max_num + 1):
-        if i % 3 == 0:
-            print[i]
+        dev_3 = i % 3 == 0
+        dev_5 = i % 5 == 0
+        if (dev_3 or dev_5) and not(dev_3 and dev_5):
+            print(i)
+
 
 # Example:
 fizz_buzz(18)
@@ -135,10 +138,3 @@ fizz_buzz(33)
 # 27
 # 33
 
-
-def fizz_buzz(num):
-    for n in range(1, num+1):
-        div_3 = n % 3 == 0
-        div_5 = n % 5 == 0
-        if (div_3 or div_5) and not(div_3 and div_5):
-            print(n)
