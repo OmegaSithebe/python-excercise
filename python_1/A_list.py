@@ -131,7 +131,8 @@ strings_to_lengths(["on", "off", "handmade"]) #-> [2, 3, 8]
 
 
 def divisors(num):
-    new_num = abs(num)
+    # new_num = abs(num)
+    new_num = num
     new_list = []
     for g in range(1, num + 1):
         if new_num % g == 0:
@@ -142,4 +143,7 @@ def divisors(num):
 divisors(15) #-> [1, 3, 5, 15]
 divisors(7) #-> [1, 7]
 divisors(24) #-> [1, 2, 3, 4, 6, 8, 12, 24]
+
+
+
 
