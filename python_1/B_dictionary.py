@@ -69,3 +69,62 @@ print(most_common_letter("shoestring"))
 print(most_common_letter("preparedness"))
 # 'e'
 
+
+def word_replace(str1, dict1):
+    str2 = str1.split(' ')
+    new_str = []
+    for key in str2:
+        if key in dict1:
+            new_str.append(dict1[key])
+        else:
+            new_str.append(key)
+    return ' '.join(new_str)
+    
+print(word_replace(
+"I never take naps during the day",
+    {"never":"always","day":"weekend" }
+))
+# 'I always take naps during the weekend'
+
+print(word_replace(
+"the park is closed",
+    {"closed":"open","the":"a" }
+))
+# 'a park is open'
+
+print(word_replace(
+"I do what I want",
+    {"I":"we","cat":"dog" }
+))
+# 'we do what we want'
+
+
+#Exercise 5
+def get_average_age(dict1):
+    tot_age = 0
+    for key in dict1:
+        tot_age += key['age']
+    return round(tot_age/len(dict1), 2)
+
+
+peeps = [
+    {"name":"Lovelace","age":36,"born":"London, UK" },
+    {"name":"Kleene","age":85,"born":"Connecticut, US" },
+    {"name":"Turing","age":41,"born":"London, UK" },
+    {"name":"Hopper","age":85,"born":"New York, US" },
+]
+
+print(get_average_age(peeps))
+# 61.75
+
+
+people = [
+    {"name":"Orwell","age":46,"born":"Bihar, India" },
+    {"name":"Bradbury","age":91,"born":"California, US" },
+    {"name":"Huxley","age":69,"born":"California, US" },
+]
+
+print(get_average_age(people))
+# 68.67
+
+
