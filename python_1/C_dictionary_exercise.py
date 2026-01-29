@@ -106,3 +106,29 @@ print(secret_cipher("lantern", {"e":"o","l":"p","n":"m","r":"j" }))
 
 
         
+#Practice 3
+def object_add(dict1, dict2):
+    new_count = {}
+    for key, value in dict1.items():
+        new_count[key] = value
+        
+    for key, value in dict2.items():
+        if key in new_count:
+            new_count[key] += value
+        else:
+            new_count[key] = value
+    return new_count
+
+obj1 = {"x":3,"y":10 }
+obj2 = {"y":2,"x":1 }
+
+print(object_add(obj1, obj2))
+# { "x": 4, "y": 12 }
+
+
+obj3 = {"a":3,"b":2,"c": -1 }
+obj4 = {"b":5,"c":1,"e":4 }
+
+print(object_add(obj3, obj4))
+# { "a": 3, "b": 7, "c": 0, "e": 4 }
+
