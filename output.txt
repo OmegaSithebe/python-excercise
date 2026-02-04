@@ -1,0 +1,4 @@
+This is the new writing, Hello Python 
+Using with statement
+
+Learning best practices using the append function
