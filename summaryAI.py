@@ -99,3 +99,6 @@ cost = (input_tokens * input_token_price + output_tokens * output_token_price)
 print(f"Estimated cost: ${cost}")
 
 
+#That’s about **one-tenth of a cent**. Important for production:- Long documents- Large user traffic- Powerful models. Costs can grow quickly.**Always estimate token usage before deploying at scale.**
+
+
