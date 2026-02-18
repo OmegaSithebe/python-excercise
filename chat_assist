@@ -1,0 +1,86 @@
+## Chat Completions for Single-Turn Tasks
+# Chat messages are sent as a **list of messages**, where each message has:- a `role` → system / user / assistant- a `content` → the text### 🔹 Important Rule for Single-Turn TasksFor **single-turn questions**, we usually **do NOT send assistant messages**.The model generates a response using:- its existing knowledge- the **system message**- the **user message**
+### Example (Single-Turn)```System: You are a helpful Python tutor.User: What is a list in Python?```No assistant message is needed here.
+
+## Why Use the Assistant Role? (Providing Examples)The **main purpose** of the assistant role is to **give examples**.This is very useful for:- shot prompting- controlling tone (simple, formal, friendly)- controlling format (steps, bullets, code + explanation)👉 This is a **structured way of shot prompting**.
+
+## Assistant Role with Examples (Python Tutor Example)Let’s say we are building a **Python programming tutor app**.We can teach the AI how to respond by giving it **example conversations**.### ✅ Example Structure```System: You are a Python tutor who explains concepts simply.User: What is a variable in Python?Assistant: A variable is a container used to store data.Example:x = 10Here, x stores the value 10.User: What is a loop in Python?```👉 The AI now understands:- how detailed the answer should be- that examples are required- the teaching style
+
+## How the Response WorksThe output is accessed the **same way** as before (message → content).Because we gave an **assistant example**, the AI now replies in:- similar tone- similar length- similar structure
+
+## System vs Assistant vs User (Very Important)Let’s clearly understand **where to put examples** 👇### 🟦 System Role → Rules & GuardrailsUse this when:- output must follow a strict format- behavior must never change✅ Example:```System: Always answer in simple English and include one example.```Think of it as rules the AI must obey.
+
+### Assistant Role → Example AnswersUse this when:- you want to show **how answers should look**- you want consistent style in conversations✅ Example:```User: What is a function?Assistant: A function is a block of reusable code.Example:def greet():    print("Hello")```Best for **multi-turn chatbots**.
+
+### User Role → Context or Task-Specific ExamplesUse this when:- context is needed to understand the task- it’s a one-time task✅ Example (Job Advertisement):```User: Here is an old job ad. Create a new one similar to this.[old job ad text]```Common in **single-turn tasks**.
+
+## Summary Table:Role-	Purpose-	When to Use
+# System-	Rules & behavior-	Fixed output format, restrictions
+# Assistant-	Example responses-	Style, tone, teaching pattern
+# User-	Question or task-	Context or instructions
+
+
+### 📝 Practice Task
+# Create a chatbot that:- teaches Python basics- gives short explanations- always includes an example
+# Use:- system role → rules- assistant role → example answer- user role → question
+# > The **assistant role is not just for replies** — it is a **powerful teaching tool** to guide how the AI should respond.
+
+
+import os
+from dotenv import load_dotenv
+from openai import OpenAI
+
+#Load enivronment variable
+load_dotenv()
+
+#Get & Initialize environment variable
+api_key = os.getenv('OPENAI_API_KEY')
+
+#Catch API key error if not loaded
+if not api_key:
+    raise ValueError('Error API key not loaded/found: Please check environment file(.env)')
+
+#Create OpenAI client
+client = OpenAI(api_key=api_key)
+
+# response = client.chat.completions.create(
+#     model="gpt-4o-mini",
+#     # Add a user and assistant message for in-context learning
+#     messages=[
+#         {"role": "system", "content": "You are a helpful Geography tutor that generates concise summaries for different countries."},
+#         {"role": "user", "content": "Give me a quick summary of Portugal."},
+#         {"role": "assistant", "content": "Portugal is a country in Europe that borders Spain. The capital city is Lisboa."},
+#         {"role": "user", "content": "Give me a quick summary of Greece."}
+#     ]
+# )
+
+# print(response.choices[0].message.content)
+
+
+response = client.chat.completions.create(
+   model="gpt-4o-mini",
+   # Add in the extra examples and responses
+   messages=[
+       {"role": "system", "content": "You are a helpful Geography tutor that generates concise summaries for different countries."},
+       {"role": "user", "content": "Give me a quick summary of Portugal."},
+       {"role": "assistant", "content": "Portugal is a country in Europe that borders Spain. The capital city is Lisboa."},
+    {"role": "user", "content": "Give me a quick summary of Japan."},
+        {"role": "assistant", "content": "Japan is an island nation in East Asia known for its advanced technology, rich culture, and capital city Tokyo."},
+
+        {"role": "user", "content": "Give me a quick summary of Brazil."},
+        {"role": "assistant", "content": "Brazil is the largest country in South America, famous for the Amazon rainforest and its capital Brasília."},
+
+        {"role": "user", "content": "Give me a quick summary of Kenya."},
+        {"role": "assistant", "content": "Kenya is an East African nation known for its diverse wildlife, Great Rift Valley, and capital Nairobi."},
+
+       {"role": "user", "content": "Give me a quick summary of Greece."}
+   ]
+)
+
+print(response.choices[0].message.content)
+
+
+
+
+
+
