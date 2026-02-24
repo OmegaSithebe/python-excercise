@@ -30,105 +30,105 @@
 
 ## **Simple Summary**🧠 **Think of prompting like teaching:**- No example → student guesses- One example → student copies format- Many examples → student understands patternThat’s exactly how **few-shot prompting** works 🚀
 
-# import os
-# from dotenv import load_dotenv
-# from openai import OpenAI
+import os
+from dotenv import load_dotenv
+from openai import OpenAI
 
 #load the dotenv environment variable
-# load_dotenv()
+load_dotenv()
 
 #Get & initialize the environment variable
-# api_key = os.getenv('GEMINI_API_KEY')
+api_key = os.getenv('OPENAI_API_KEY')
 
 #catch API Key if not loaded
-# if not api_key:
-#     raise ValueError('API key not loaded: Please check environment file (.env)')
+if not api_key:
+    raise ValueError('API key not loaded: Please check environment file (.env)')
 
 #Create OpenAI API client
-# client = OpenAI(api_key=api_key)
+client = OpenAI(api_key=api_key)
 
 
 # Create a one-shot prompt
-# prompt = """
-#      Q: Extract the odd numbers from {1, 3, 7, 12, 19}. A: Odd numbers = {1, 3, 7, 19}
-#      Q: Extract the odd numbers from {3, 5, 11, 12, 16}. A:
-# """
-
-#Get response function
-# def get_response(prompt):
-#     response = client.chat.completions.create(
-#         model='gpt-4o-mini',
-#         max_completion_tokens=150,
-#         messages=[
-#             {'role': 'user', 'content': prompt}
-#         ],
-#         temperature=0
-#     )
-    
-#     return response.choices[0].message.content
-
-# response = get_response(prompt)
-# print(response)
-
-
-import os
-from dotenv import load_dotenv
-import google.generativeai as genai
-
-# Load environment variables
-load_dotenv()
-api_key = os.getenv('GEMINI_API_KEY')
-
-if not api_key:
-    raise ValueError('API key not loaded: Check your .env file')
-
-# Configure the Gemini SDK
-genai.configure(api_key=api_key)
-
-# Initialize the model (Gemini 1.5 Flash is great for small tasks)
-model = genai.GenerativeModel('gemini-1.5-flash')
-
-# Your one-shot prompt
 prompt = """
      Q: Extract the odd numbers from {1, 3, 7, 12, 19}. A: Odd numbers = {1, 3, 7, 19}
      Q: Extract the odd numbers from {3, 5, 11, 12, 16}. A:
 """
 
-def get_response(prompt_text):
-    # Temperature 0 for consistent, logical results
-    response = model.generate_content(
-        prompt_text,
-        generation_config=genai.types.GenerationConfig(
-            temperature=0
-        )
+# Get response function
+def get_response(prompt):
+    response = client.chat.completions.create(
+        model='gpt-4o-mini',
+        max_completion_tokens=150,
+        messages=[
+            {'role': 'user', 'content': prompt}
+        ],
+        temperature=0
     )
-    return response.text
+    
+    return response.choices[0].message.content
 
 response = get_response(prompt)
 print(response)
 
 
+# import os
+# from dotenv import load_dotenv
+# import google.generativeai as genai
+
+# Load environment variables
+# load_dotenv()
+# api_key = os.getenv('GEMINI_API_KEY')
+
+# if not api_key:
+#     raise ValueError('API key not loaded: Check your .env file')
+
+# Configure the Gemini SDK
+# genai.configure(api_key=api_key)
+
+# Initialize the model (Gemini 1.5 Flash is great for small tasks)
+# model = genai.GenerativeModel('gemini-1.5-flash')
+
+# Your one-shot prompt
+# prompt = """
+#      Q: Extract the odd numbers from {1, 3, 7, 12, 19}. A: Odd numbers = {1, 3, 7, 19}
+#      Q: Extract the odd numbers from {3, 5, 11, 12, 16}. A:
+# """
+
+# def get_response(prompt_text):
+#     # Temperature 0 for consistent, logical results
+#     response = model.generate_content(
+#         prompt_text,
+#         generation_config=genai.types.GenerationConfig(
+#             temperature=0
+#         )
+#     )
+#     return response.text
+
+# response = get_response(prompt)
+# print(response)
+
+
 
 
 # Sentiment analysis with few-shot prompting
-response = client.chat.completions.create(
-  model = "gpt-4o-mini",
-  # Provide the examples as previous conversations
-  messages = [{"role": "user",
-  		     "content": "The product quality exceeded my expectations"},
-              {"role": "assistant",
-  		     "content": "1"},
-              {"role": "user",
-  		     "content": "I had a terrible experience with this product's customer service"},
-              {"role": "assistant",
-  		     "content": "-1"}, 
-              # Provide the text for the model to classify
-              {"role": "user",
-  		     "content": "The price of the product is really fair given its features"}
-             ],
-  temperature = 0
-)
-print(response.choices[0].message.content)
+# response = client.chat.completions.create(
+#   model = "gpt-4o-mini",
+#   # Provide the examples as previous conversations
+#   messages = [{"role": "user",
+#   		     "content": "The product quality exceeded my expectations"},
+#               {"role": "assistant",
+#   		     "content": "1"},
+#               {"role": "user",
+#   		     "content": "I had a terrible experience with this product's customer service"},
+#               {"role": "assistant",
+#   		     "content": "-1"}, 
+#               # Provide the text for the model to classify
+#               {"role": "user",
+#   		     "content": "The price of the product is really fair given its features"}
+#              ],
+#   temperature = 0
+# )
+# print(response.choices[0].message.content)
 
 
 
@@ -199,3 +199,37 @@ step 3: returning one output.
 
 response = get_response(prompt)
 print(response)
+
+
+
+# 2.3 Chain-of-Thought and Self-Consistency Prompting - prompting techniques that help us understand how an AI model arrives at its answer, not just the final answer.
+
+## 2. What is Chain-of-Thought Prompting?Chain-of-thought prompting means **asking the AI to explain its thinking step by step before giving the final answer**.This is very useful for:- Math problems- Logical reasonin- Multi-step decision makingInstead of jumping straight to the answer, the model **thinks out loud**, just like a student solving a problem on the board.### Simple idea:👉 *“Show your working, not just the answer.”*
+
+## 4. Using Chain-of-Thought PromptingNow let’s improve the prompt.### ✅ Chain-of-Thought Prompt:> “Solve the problem step by step and explain your reasoning.”> ### Model Output:1. Rahul starts with **10 books**2. He gives away **3 books → 10 − 3 = 7**3. He buys **5 more books → 7 + 5 = 12**4. **Final answer: 12 books**✅ Now we can clearly **see and verify each step**.
+
+## Chain-of-Thought vs Multi-Step PromptingNow let’s compare two techniques.## Multi-Step Prompting:- **You write the steps in the prompt**- The model follows your instructions### Example:> “First find how many apples are left.> > > Then add the new apples.> > Finally, give the total.”> Here, **the thinking is already provided by you**.
+
+## 8. Limitation of Chain-of-ThoughtOne big limitation is:❗ **If the model makes a mistake in one step, the final answer will also be wrong.**Even a small reasoning error can break the entire solution.This is where **self-consistency prompting** helps.---
+
+## 9. What is Self-Consistency Prompting?Self-consistency prompting means:- The model **solves the same problem multiple times**- Each time, it uses **a different reasoning path**- We then choose the **most common final answer**👉 Think of it like asking **multiple students** to solve the same question.
+
+## 10. Self-Consistency Prompt Example### Example Problem:> “There are cars in a parking lot.> > > 5 cars leave, and 7 new cars enter.> > Finally, how many cars are there?”> ### Prompt:> “Imagine three independent experts solving this problem.> > > Each expert explains their reasoning.> > Choose the final answer by majority vote.”> ### Model Output:- **Expert 1:** Final answer = 12- **Expert 2:** Final answer = 12- **Expert 3:** Final answer = 11
+
+## 11. Final Self-Consistency OutputSince **2 out of 3 experts** got the answer **12**, the model selects:✅ **Final Answer: 12**This method:- Reduces errors- Improves reliability- Works well for complex reasoning tasks
+
+### Quick Classroom Summary- **Chain-of-thought** → Ask the model to explain step by step- **Few-shot chain-of-thought** → Show examples of reasoning- **Multi-step prompting** → You provide the steps- **Self-consistency** → Ask multiple times and take majority answer
+
+
+# 2.4 Iterative Prompt Engineering and Refinement - iterative prompt engineering, which means improving a prompt step by step until we get the output we really want.
+
+## 2. What is Iterative Prompt Engineering?Prompt engineering **does not always work perfectly on the first try**.So we follow a simple cycle:1. Write a prompt2. Give it to the model3. Look at the output4. Analyze what is missing or wrong5. Improve (refine) the prompt6. Repeat until satisfied👉 This is why it’s called **iterative** (repeat again and again).### Simple classroom analogy:Just like students **improve answers after teacher feedback**, we improve prompts after seeing model output.
+
+## 6. Example: First Prompt Refinement### Refined Prompt:> “Analyze the following code in one sentence and mention the programming language.”> ### Model Output:> “This Python function calculates the area of a rectangle using length and width.”> ✅ Now we get **exactly what we asked for**.---
+
+## 7. Example: Structured Prompt RefinementNow suppose we want **more structured information**.### Refined Prompt:> “Analyze the following function and provide:> > > – Short description> > – Programming language> > – Inputs> > – Outputs”>
+
+## 8. Result of Prompt Refinement### Model Output:- **Description:** Calculates the area of a rectangle- **Language:** Python- **Inputs:** length, width- **Output:** area of the rectangle🎯 Because the prompt was clear and specific, the output matches it perfectly.
+
+## 12. Prompt Refinement Works EverywherePrompt refinement applies to **all prompt types**:- **Few-shot prompts** → refine examples- **Multi-step prompts** → refine steps- **Chain-of-thought prompts** → refine problem description- **Self-consistency prompts** → refine reasoning instructions⚠️ Sometimes the model gives wrong answers due to **missing domain knowledge**.We’ll learn how to handle that in later lessons.
+
