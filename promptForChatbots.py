@@ -32,15 +32,20 @@ if not api_key:
 #create OpenAI API client
 client = OpenAI(api_key=api_key)
 
+# system_prompt = 'You are a Software Engineer/Developer, your job is to instruct a huge banking corporate company how & ways to go from physical paper work to using electronic systems & secure cloud websites for easy & anywhere access transmissions.'
+
+# user_prompt = 'I have a client paper work from UK England and my banking corporate company is here in South Africa. I want to get here in South Africa, verify it and then send it back to England ASAP but I fear the process is going to take forever the back & forth. Any other solutions you can recommend for me & including our company?'
+
 #create get response function
 def get_response(system_prompt, user_prompt):
-  # Assign the role and content for each message
-  messages = [{"role": "system", "content": system_prompt},
-      		  {"role": "user", "content": user_prompt}]  
-  response = client.chat.completions.create(
-      model="gpt-4o-mini", messages= messages, temperature=0)
-  
-  return response.choices[0].message.content
+    messages = [
+        {'role': 'system', 'content': system_prompt},
+        {'role': 'user', 'content': user_prompt}]
+    response = client.chat.completions.create(
+        model='gpt-4o-mini', messages=messages, max_completion_tokens=450, temperature=0
+    )
+    return response.choices[0].message.content
+
 
 # Try the function with a system and user prompts of your choice 
 response = get_response("You are an expert data scientist that explains complex concepts in understandable terms", "Define AI")
@@ -50,8 +55,23 @@ print(response)
 
 # Behavioral control of a customer support chatbot
 # Define the technical issue condition
-technical_issue_condition = "I'm sorry to hear about your issue with ... if the user is reporting a technical issue."
+technical_issue_condition = '''
+If the user is reporting a technical issue, 
+start your response with:
+'I'm sorry to hear about your issue with ...'
+and then continue with helpful troubleshooting steps.
+'''
 
+base_system_prompt = '''
+You are a professional and polite customer support chatbot.
+You help customers with orders, deliveries, refunds and technical issues.
+Your responses should be clear, concise and helpful.
+'''
+
+order_number_condition = '''
+If a user asks about an order but does not provide an order number, 
+politely ask them to share their order number before proceeding.
+'''
 # Create the refined system prompt
 refined_system_prompt =f"""
 
@@ -67,3 +87,6 @@ response_2 = get_response(refined_system_prompt, "Can you help me track my recen
 
 print("Response 1: ", response_1)
 print("Response 2: ", response_2)
+
+
+# 4.2 Role-playing prompts for chatbots
