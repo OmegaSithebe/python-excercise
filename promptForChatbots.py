@@ -90,3 +90,91 @@ print("Response 2: ", response_2)
 
 
 # 4.2 Role-playing prompts for chatbots
+## What Are Role-Playing Prompts?Role-playing prompts instruct a chatbot to **act as a specific role**, just like an actor playing a character in a movie or play 🎭.Instead of giving **generic answers**, the chatbot:- Adopts a specific **tone**- Uses suitable **vocabulary**- Follows the **behavior of the assigned role**📌 This makes chatbot responses **more realistic, professional, and useful**.
+
+## Why Role-Playing Prompts Matter in Chatbot DevelopmentRole-playing prompts are especially useful for:- Domain-specific chatbots (finance, healthcare, tech, education)- Customer support systems- Professional advisory chatbots
+### Benefits:- More accurate responses- Better user experience- Consistent personality and expertise- Clear separation of responsibilities📌 The chatbot learns how roles behave from its **training data**, but we must **explicitly instruct it** using prompts.
+
+## Understanding Role-Playing with an Example### Scenario:We are building a chatbot for a **high-tech product company**.A user asks:> “Can you explain the technical specifications of this product?”> We define **three possible roles** for the chatbot.---
+### 🧑‍💼 Role 1: Customer Support Agent**How this role responds:**- Gives general guidance- Avoids deep technical details- Redirects users to official resources- Offers help politely**Example response:**> “You can find the complete specifications on our official website. If you need help choosing the right product, I’d be happy to assist.”>
+
+## Implementing Role-Playing PromptsTo implement role-playing, we **explicitly tell the model what role to play**.This is commonly done using **system messages** when working with the **OpenAI API**.
+### Example Prompt:**System message:**> “You are an expert financial analyst.”> **User message:**> “Give retirement planning advice for people nearing retirement.”> 📌 The chatbot now responds like a **real financial expert**, not a general assistant.
+
+## Role-Playing with Additional RequirementsRole-playing **does not replace** other prompt rules.We still need to specify:- Behavior limits- Topic boundaries- Response guidelines
+### Example:**System message:**> “You are a technology journalist. Answer only technology-related questions. For other topics, say that you specialize in technology.”> **User asks:**> “Tell me about American literature.”> **Chatbot replies:**> “I specialize in technology and the tech industry, so I’m unable to help with literature-related topics.”> 📌 This keeps the chatbot:- Focused- Accurate- Domain-specific
+
+## Key Takeaways- Role-playing prompts make chatbots act like real professionals- Same question can have different answers based on role- Roles affect tone, depth, and vocabulary- Adding traits makes role-playing more realistic- Role-playing should be combined with behavior rules
+
+# Exercise
+# Learning advisor chatbot
+
+# Craft the system_prompt using the role-playing approach
+system_prompt = " act as a learning advisor who can interpret learner queries as described and provide the relevant textbook recommendations. specify the role of a learning advisor and the instruction to recommend beginner and advanced textbooks based on their background?"
+
+user_prompt = "Hello there! I'm a beginner with a marketing background, and I'm really interested in learning about Python, data analytics, and machine learning. Can you recommend some books?"
+
+response = get_response(system_prompt, user_prompt)
+print(response)
+
+
+
+# **Adding guidelines for the learning advisor chatbot**
+
+#Create a base prompt 
+base_system_prompt = 'Act as a learning advisor who receives queries from users mentioning their background, experience, and goals, and accordingly provides a response that recommends a tailored learning path of textbooks, including both beginner-level and more advanced options.'
+
+#Define behaviour guidelines
+behavior_guidelines = 'ask a user about their background, experience, and goals, whenever any of these were not provided in a prompt.'
+
+#Define reponse guidelines
+response_guidelines = 'recommend no more than three textbooks.'
+
+system_prompt = base_system_prompt + behavior_guidelines + response_guidelines
+user_prompt = """
+Hey, I'm looking for courses on python and data visualization. What do you recommend? 
+"""
+
+response = get_response(system_prompt, user_prompt)
+print(response)
+
+
+
+# 4.3 Incorporating external context
+## What Is External Context?External context means **extra information that we provide to a chatbot**, which the model does not already know from its training.👉 This information helps the chatbot give **accurate, relevant, and useful answers** to users.
+
+## Why Do Chatbots Need External Context?When we build a chatbot using the **OpenAI API**, we are using a **pre-trained language model (LLM)**.### Important limitation:LLMs only know:- Information from their training data- Up to a specific **knowledge cut-off date**📌 But in real applications, chatbots often need:- Company-specific data- Recent updates- Private or internal informationThat’s why we must **inject external context**.
+
+# Why Is Some Information Missing in LLMs?There are **two main reasons** why a chatbot may not know something.---
+### 🔹 Reason 1: Knowledge Cut-OffLanguage models are trained **up to a certain date**.If you ask about events **after that date**, the model:- May say it doesn’t know- Or may guess (hallucinate) if not guided properly### Example:A model trained up to 2021 is asked:> “What are the financial trends in 2023?”> **Possible response:**> “I’m sorry, but as of my last update in 2021, I don’t have information about financial trends in 2023.”> 📌 This happens because the information did not exist during training.
+
+### Reason 2: Private or Non-Public InformationSome information is **never available online**, so the model cannot learn it.### Example:You ask a chatbot acting as a study buddy:> “Who is my favorite instructor?”> 📌 The model cannot know this because:- It’s personal information- It was never part of public training data
+
+## How Do We Provide Extra Information to a Chatbot?To solve this problem, we **explicitly give context** to the chatbot.There are **two common ways**:1. Sample conversations2. System prompt with embedded context
+
+## Method 1: Using Sample Conversations We can guide the chatbot by showing **example conversations**.### Example:**System message:**> “You are a customer service chatbot.”> **User message:**> “What services do you offer?”> **Assistant message:**> “We offer web development, mobile app development, and software consulting.”> Now, when a user asks:> “How many services do you offer?”> 📌 The chatbot can infer the answer from the sample conversation.### ⚠️ Limitation:- Requires many example Q&A pairs- Not scalable for large or complex information
+
+## Method 2: Providing Context in the System Prompt (Best Approach)A **more effective and cleaner method** is to include external context directly in the **system prompt**.### Example Scenario:A company called **ABC Tech Solutions** wants the chatbot to know about its services.### System Prompt:> “You are a customer support chatbot for ABC Tech Solutions.> > > The company offers the following services:> > 1. Web application development> 2. Mobile app development> 3. Custom software solutions>     >     Respond clearly and professionally.”>     ### User asks:> “What services does your company provide?”> 📌 The chatbot answers correctly using the context:- Web application development- Mobile app development- Custom software solutions
+
+## Why System Prompt Context Works Better- Centralized information- Easy to update- No need for many example conversations- Works well with purpose and behavior rules📌 This method is ideal for:- Company chatbots- Product chatbots- Educational assistants- Internal tools
+
+## Important Limitation: Context SizeLLMs can only handle a **limited amount of context**.### What this means:- Small to medium context → works well- Very large documents or databases → not ideal📌 For large-scale context (e.g., thousands of documents), more advanced techniques are required (covered in advanced courses).
+
+## Key Takeaways- LLMs do not know everything- Missing information is due to:    - Knowledge cut-off    - Private or non-public data- External context improves chatbot accuracy- System prompts are the best way to inject context- Context size is limited and must be managed carefully
+
+
+# Exercise
+# Providing context through sample conversations
+
+#Define the system prompt
+system_prompt = ''
+
+context_question = 'What types of items can be delivered using MyPersonalDelivery?'
+context_answer = 'We deliver everything from everyday essentials such as groceries, medications, and documents to larger items like electronics, clothing, and furniture. However, please note that we currently do not offer delivery for hazardous materials or extremely fragile items requiring special hand'
+
+# Add the context to the model
+response = client.chat.completions.create(
+    model
+)
+
+
