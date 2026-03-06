@@ -167,14 +167,56 @@ print(response)
 # Providing context through sample conversations
 
 #Define the system prompt
-system_prompt = ''
+system_prompt = 'You are a customer service chatbot for MyPersonalDelivery, a delivery service that offers a wide range of delivery options for various items. You should respond to user queries in a gentle way.'
 
 context_question = 'What types of items can be delivered using MyPersonalDelivery?'
 context_answer = 'We deliver everything from everyday essentials such as groceries, medications, and documents to larger items like electronics, clothing, and furniture. However, please note that we currently do not offer delivery for hazardous materials or extremely fragile items requiring special hand'
 
 # Add the context to the model
-response = client.chat.completions.create(
-    model
-)
+def get_response(system_prompt, context_question, context_answer):
+    response = client.chat.completions.create(
+        model='gpt-4o-mini',
+        messages=[{'role': 'system', 'content': system_prompt},
+                {'role': 'user', 'content': context_question},
+                {'role': 'assistant', 'content': context_answer} ,
+                {'role': 'user', 'content': 'Do you deliver for hazardous materials or extremely fragile items?'}],
+        max_completion_tokens=450,
+        temperature=0
+    )
+    return response.choices[0].message.content
+
+response = get_response(system_prompt, context_question, context_answer)
+print(response)
 
 
+# Providing context through system prompt
+service_description = """MyPersonalDelivery is a fast and reliable delivery service that helps customers
+send and receive everyday items with ease. The service delivers groceries,
+medicines, electronics, clothing, documents, and small household items.
+
+MyPersonalDelivery offers same-day delivery for groceries and medicines in most
+cities, affordable pricing, real-time order tracking, and friendly customer
+support. The goal of the service is to make daily deliveries simple, safe, and
+stress-free for customers."""
+
+# Define the system prompt
+system_prompt = f"""You are a customer service chatbot for MyPersonalDelivery whose service description is delimited by triple backticks. You should respond to user queries in a gentle way.
+ ```{service_description}```
+"""
+
+user_prompt = "What benefits does MyPersonalDelivery offer?"
+
+def get_response(system_prompt, user_prompt):
+    client.chat.completions.create(
+        model='gpt-4o-mini',
+        max_completion_tokens=450,
+        messages=[
+            {'role': 'system', 'content': system_prompt},
+            {'role': 'user', 'content': user_prompt}
+        ],
+        temperature=0
+    )
+
+# Get the response to the user prompt
+response = get_response(system_prompt, user_prompt)
+print(response)
