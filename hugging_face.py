@@ -72,6 +72,12 @@
 ## **Using Hugging Face Inference Providers**Now let’s run models **without using our own hardware**.
 ### **Steps**1. Create an inference client2. Choose an inference provider3. Add Hugging Face API key4. Send input as messagesExample provider:**Together.ai**
 
+## **Conversational Text Generation (API Style)**Most modern LLMs use a **chat-based format**.### **Message Structure**
+# messages= [
+#     {"role":"user","content":"Explain AI in simple terms"}
+# ]
+# - `role: "user"` → input from us- `content` → the promptThe provider:- Runs the model remotely- Sends back the generated response✅ Fast✅ No GPU needed✅ No laptop overheating 😄
 
+## **Key Takeaways (Wrap-Up)**### **Local Inference**- Free & simple- Limited by hardware### **Inference Providers**- Fast & scalable- Ideal for large models- Uses API + credits### **Transformers Pipeline**- Easiest way to run models locally- Great for learning and prototyping
 
-
+# Building a text generation pipeline
