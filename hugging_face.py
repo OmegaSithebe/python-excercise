@@ -81,3 +81,53 @@
 ## **Key Takeaways (Wrap-Up)**### **Local Inference**- Free & simple- Limited by hardware### **Inference Providers**- Fast & scalable- Ideal for large models- Uses API + credits### **Transformers Pipeline**- Easiest way to run models locally- Great for learning and prototyping
 
 # Building a text generation pipeline
+
+#import thr pipeline
+from transformers import pipeline
+
+# Create the pipeline
+gpt2_pipeline = pipeline(
+    task="text-generation", 
+    model="openai-community/gpt2"
+    )
+
+#Generate three text outputs with a maximum length of 10 tokens
+results = gpt2_pipeline(
+    'What if AI', 
+    max_new_tokens=10, 
+    num_return_sequences=2
+    )
+
+results = gpt2_pipeline(
+    'How to build a successful startup',
+    max_new_tokens=15,
+    num_return_sequences=3
+)
+
+for result in results:
+    print(result['generated_text'])
+    
+    
+    
+# Exercise
+# Inference providers
+import os
+from huggingface_hub import InferenceClient
+
+client = InferenceClient(
+    provider='together',
+    api_key=os.environ['HF_TOKEN'],
+)
+
+completion = client.chat.completions.create(
+    model='deepseek-ai/Deepseek-V3',
+    messages=[
+        {'role': 'user', 'content': 'what is the capital of France?'}
+    ]
+)
+
+print(completion.choices[0].message.content)
+
+
+
+# 1.3 Hugging Face Datasets
