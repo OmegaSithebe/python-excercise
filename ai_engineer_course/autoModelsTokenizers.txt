@@ -1,0 +1,430 @@
+# 2.3 Auto Models and Auto Tokenizers (Hugging Face)
+
+## 1️⃣ Introduction
+
+Welcome back! 👋
+
+In previous classes, we used **pipelines** to quickly run tasks like **text classification** and **summarization**.
+
+Today, we’ll go **one level deeper** and learn how to gain **full control** over models and tokenization using:
+
+👉 **AutoModels and AutoTokenizers**
+
+---
+
+## 2️⃣ Pipelines: Fast and Simple
+
+Pipelines are a **high-level abstraction** provided by **Hugging Face Transformers**.
+
+### ✅ What pipelines do for us
+
+- Load the model
+- Load the tokenizer
+- Preprocess input
+- Run inference
+- Format output
+
+All in **one line of code**.
+
+### 📌 Example
+
+```python
+from transformers import pipeline
+
+classifier=pipeline("text-classification")
+classifier("I love learning AI!")
+```
+
+✔ Perfect for:
+
+- Demos
+- Beginners
+- Rapid experimentation
+
+❌ But… pipelines hide many details.
+
+---
+
+## 3️⃣ Auto Classes: Flexible and Powerful
+
+When we need **more control**, pipelines become limiting.
+
+That’s where **Auto classes** come in.
+
+### 🔹 What are Auto Classes?
+
+Auto classes automatically:
+
+- Load the **correct model architecture**
+- Load the **correct tokenizer**
+- Match them properly
+
+But **you control each step**.
+
+### 📌 Comparison
+
+| Pipelines | Auto Classes |
+| --- | --- |
+| Simple | Flexible |
+| Less control | Full control |
+| Best for demos | Best for production & research |
+
+---
+
+## 4️⃣ AutoModels
+
+AutoModels simplify model loading **without hardcoding architectures**.
+
+### 🎯 Example: Text Classification
+
+For text classification (also called **sequence classification**), we use:
+
+👉 `AutoModelForSequenceClassification`
+
+### ✅ Loading a model
+
+```python
+from transformers import AutoModelForSequenceClassification
+
+model=AutoModelForSequenceClassification.from_pretrained(
+"distilbert-base-uncased-finetuned-sst-2-english"
+)
+```
+
+📌 What happens internally:
+
+- Correct model class is selected
+- Pretrained weights are downloaded
+- Model is ready for inference or fine-tuning
+
+---
+
+## 5️⃣ AutoTokenizers
+
+Models **do not understand raw text**.
+
+They only understand **numbers (tokens)**.
+
+That’s why we need **tokenizers**.
+
+### ⚠️ Important Rule
+
+👉 **Always use the tokenizer paired with the model**
+
+Pipelines do this automatically.
+
+With Auto classes, **you do it manually**.
+
+### ✅ Loading the tokenizer
+
+```python
+from transformers import AutoTokenizer
+
+tokenizer=AutoTokenizer.from_pretrained(
+"distilbert-base-uncased-finetuned-sst-2-english"
+)
+```
+
+📌 This ensures:
+
+- Same preprocessing
+- Same vocabulary
+- Same token rules used during training
+
+---
+
+## 6️⃣ Tokenizing Text with AutoTokenizer
+
+### 🔍 What does a tokenizer do?
+
+1. Cleans text (lowercase, accents, punctuation)
+2. Splits text into **tokens**
+3. Maps tokens to **IDs**
+
+### ✅ Example
+
+```
+tokens=tokenizer.tokenize("I love learning AI!")
+print(tokens)
+```
+
+### 🧾 Output (example)
+
+```
+['i', 'love', 'learning', 'ai', '!']
+```
+
+📌 These tokens are what the model actually processes.
+
+---
+
+## 7️⃣ Different Models, Different Tokenizers
+
+Not all models tokenize text the same way.
+
+### 📌 Example
+
+- BERT → word-piece tokens
+- GPT → byte-pair encoding
+- SentencePiece → subword units
+
+The **same sentence** can produce **different tokens** depending on the model.
+
+👉 This is why **mixing tokenizers and models is dangerous**.
+
+---
+
+## 8️⃣ Building a Custom Pipeline with Auto Classes
+
+Now let’s build a **pipeline manually** using Auto classes.
+
+### ✅ Custom Sentiment Analysis Pipeline
+
+```python
+fromtransformersimport (
+AutoTokenizer,
+AutoModelForSequenceClassification,
+pipeline
+)
+
+model_name="distilbert-base-uncased-finetuned-sst-2-english"
+
+tokenizer=AutoTokenizer.from_pretrained(model_name)
+model=AutoModelForSequenceClassification.from_pretrained(model_name)
+
+custom_pipeline=pipeline(
+task="text-classification",
+model=model,
+tokenizer=tokenizer
+)
+
+custom_pipeline("This course is absolutely amazing!")
+```
+
+📌 Same result as a normal pipeline
+
+📌 But now **you can customize every step**
+
+---
+
+## 9️⃣ Use Cases for AutoModels and AutoTokenizers
+
+We prefer Auto classes when tasks require **advanced customization**.
+
+### 🔹 1. Advanced Text Preprocessing
+
+- Custom cleaning rules
+- Domain-specific normalization
+
+### 🔹 2. Custom Thresholding
+
+- Adjust confidence cutoffs
+- Prefer certain labels (e.g., route more queries to **Support**)
+
+### 🔹 3. Complex NLP Pipelines
+
+- Multi-step workflows
+- Combine classification, summarization, and embeddings
+- Integrate with databases or APIs
+
+📌 Auto classes give **precision and control**, essential for real-world systems.
+
+---
+
+## ✅ Key Takeaways for Students
+
+- Pipelines = fast & beginner-friendly
+- Auto classes = flexible & powerful
+- AutoModels load the **right architecture automatically**
+- AutoTokenizers ensure **correct text preprocessing**
+- Never mix models and tokenizers randomly
+
+## 📌 When to Use AutoModels and AutoTokenizers
+
+You should use **AutoModels** and **AutoTokenizers** when you need **more control, customization, or flexibility** than what simple pipelines provide.
+
+---
+
+## 1️⃣ When Pipelines Are *Not Enough*
+
+Pipelines are great for:
+
+- Quick experiments
+- Demos
+- Learning basics
+
+But they **hide internal steps**, such as:
+
+- How text is tokenized
+- How inputs are passed to the model
+- How outputs are processed
+
+👉 When you want to **control these steps**, use AutoModels and AutoTokenizers.
+
+---
+
+## 2️⃣ Advanced Text Preprocessing
+
+Use AutoTokenizers when you need:
+
+- Custom text cleaning
+- Special handling of domain-specific text
+    
+    (e.g., legal, medical, code, chat logs)
+    
+- Explicit control over truncation, padding, or max length
+
+📌 Example use case:
+
+- Cleaning customer support messages before classification
+- Handling very long documents by chunking text manually
+
+---
+
+## 3️⃣ Model–Tokenizer Compatibility (Best Practice)
+
+AutoTokenizers ensure the **exact tokenizer used during model training** is loaded.
+
+Why this matters:
+
+- Different models tokenize text differently
+- Wrong tokenizer = wrong inputs = bad predictions
+
+👉 Always use:
+
+```
+AutoTokenizer.from_pretrained(model_name)
+AutoModel.from_pretrained(model_name)
+```
+
+---
+
+## 4️⃣ Custom Thresholding & Decision Logic
+
+In real applications, we don’t always accept the model’s top prediction blindly.
+
+Use AutoModels when you want:
+
+- Custom confidence thresholds
+- Business logic on predictions
+    
+    (e.g., classify as *Support* only if confidence > 0.8)
+    
+
+📌 Example:
+
+- Route messages to human agents if confidence is low
+- Prioritize certain labels in customer service systems
+
+---
+
+## 5️⃣ Fine-Tuning and Training Models
+
+Pipelines are **mostly for inference**.
+
+If you want to:
+
+- Fine-tune a pretrained model
+- Train on your own dataset
+- Adjust loss functions or training steps
+
+👉 You **must** use AutoModels and AutoTokenizers.
+
+This is how almost all **production and research workflows** are built.
+
+---
+
+## 6️⃣ Building Complex NLP Workflows
+
+Use Auto classes when your system involves:
+
+- Multiple NLP tasks (classification + summarization)
+- Custom batching
+- Integration with databases or APIs
+- Deployment in production environments
+
+📌 Example:
+
+- A chatbot that classifies intent, summarizes history, and generates replies
+
+---
+
+## 7️⃣ Performance and Optimization Needs
+
+AutoModels give access to:
+
+- Model outputs (logits, hidden states)
+- GPU / CPU control
+- Batch inference optimizations
+
+This is **not possible** with high-level pipelines alone.
+
+---
+
+## 🧠 Simple Rule
+
+> **Use pipelines to learn and experiment.
+Use AutoModels and AutoTokenizers to build real systems.**
+> 
+
+---
+
+## ✅ One-Line Summary (Great for Exams / Interviews)
+
+> AutoModels and AutoTokenizers are used when we need full control over tokenization, model behavior, thresholds, fine-tuning, and complex NLP workflows beyond simple pipelines.
+> 
+
+## Exercise
+
+# **Tokenizing text with AutoTokenizer**
+
+AutoTokenizers simplify text preparation by automatically handling cleaning, normalization, and tokenization. They ensure the text is processed just as the model expects.
+
+In this exercise, explore how AutoTokenizer transforms text into tokens ready for machine learning tasks.
+
+**Instructions**
+
+- **Import** the required class from `transformers`, **load** the tokenizer using the correct method, and **split** input text into tokens.
+
+```python
+# Import necessary library for tokenization
+from transformers import AutoTokenizer
+
+# Load the tokenizer
+tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")
+
+# Split input text into tokens
+tokens = tokenizer.tokenize("AI: Making robots smarter and humans lazier!")
+
+# Display the tokenized output
+print(f"Tokenized output: {tokens}")
+```
+
+## Exercise
+
+# **Using AutoClasses**
+
+You’ve seen how tokenizers work and explored their role in preparing text for models. Now, let’s take it a step further by combining AutoModels and AutoTokenizers with the `pipeline()` function. It's a nice balance of control and convenience.
+
+Continue with the sentiment analysis task and combine AutoClasses with the pipeline module.
+
+`AutoModelForSequenceClassification`, `AutoTokenizer` and `pipeline` from the `transformers` library have already been imported for you.
+
+**Instructions**
+
+- Download the model and tokenizer and save as `my_model` and `my_tokenizer`, respectively.
+- Create the pipeline and save as `my_pipeline`.
+- Predict the output using `my_pipeline` and save as `output`.
+
+```python
+# Download the model and tokenizer
+my_model = AutoModelForSequenceClassification.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")
+my_tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")
+
+# Create the pipeline
+my_pipeline = pipeline(task="sentiment-analysis", model=my_model, tokenizer=my_tokenizer)
+
+# Predict the sentiment
+output =my_pipeline("This course is pretty good, I guess.")
+print(f"Sentiment using AutoClasses: {output[0]['label']}")
+```
