@@ -121,3 +121,42 @@ messages=[{"role":"user","content":"Hello"}]
 # # Use the except statement
 # except openai.AuthenticationError as e:
 #     print("Please double check your authentication key and try again, the one provided is not valid.")
+
+
+#Batching
+# Best Practices for Avoiding Rate Limits
+# Developers should follow these guidelines:
+# ✔ Add delays between requests
+# ✔ Use automatic retry mechanisms
+# ✔ Batch multiple tasks into one request
+# ✔ Reduce unnecessary text in prompts
+# ✔ Monitor token usage
+# These techniques make AI applications **faster, more reliable, and scalable**.
+
+# Key Takeaways
+# Rate limits help maintain **fair and stable API usage**.
+# To handle them effectively:
+# - understand why they occur
+# - retry failed requests
+# - batch multiple tasks
+# - reduce token usage
+# These strategies are essential when building **large-scale AI systems**.
+
+# Exercise - Avoiding rate limits with retry
+import os
+from dotenv import load_dotenv
+from openai import OpenAI
+
+#Load environemtn variable from the dotenv file
+load_dotenv()
+
+#get the openai api key from the env file
+api_key = os.getenv('OPENAI_API_KEY')
+
+#catch error if api key not loaded
+if not api_key:
+  raise ValueError('openai api key not found, please check .env file (.env)')
+
+#create openai client
+client = OpenAI(api_key=api_key)
+

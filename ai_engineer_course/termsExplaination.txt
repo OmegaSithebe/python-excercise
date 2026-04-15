@@ -453,3 +453,12 @@ Markdown is a lightweight markup language designed to make it easy to write and 
 
 JSON (JavaScript Object Notation) is a lightweight, text-based, language-independent data-interchange format designed for human readability and easy machine parsing. It is widely used to transmit data between servers and web applications, offering a simpler alternative to XML. JSON is based on name/value pairs and arrays, commonly used in modern web APIs.
 
+#BATCHING
+What Are Rate Limits? Rate limits control **how frequently users can send requests to an API**.
+
+Tenacity is a general-purpose, Apache 2.0 licensed retrying library for Python designed to simplify adding retry behavior to functions and code blocks. It is an actively maintained fork of the older, now unmaintained retrying library.
+(Tenacity is the quality of being very determined, persistent, and holding fast to goals despite obstacles, setbacks, or long timelines.)
+
+Retry with Exponential Backoff - If the request fails: - it waits **between 1 and 60 seconds** - it retries **up to 5 times**
+
+Batching Requests - Another way to reduce rate limit issues is **batching**.Batching means **sending multiple requests together in one API call** instead of many individual calls.
