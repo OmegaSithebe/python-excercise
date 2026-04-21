@@ -462,3 +462,12 @@ Tenacity is a general-purpose, Apache 2.0 licensed retrying library for Python d
 Retry with Exponential Backoff - If the request fails: - it waits **between 1 and 60 seconds** - it retries **up to 5 times**
 
 Batching Requests - Another way to reduce rate limit issues is **batching**.Batching means **sending multiple requests together in one API call** instead of many individual calls.
+
+
+==================================================================================
+
+Think of an instance as a specific, "live" version of a tool created from a blueprint.
+In programming, the blueprint is called a Class (the OpenAI code provided by the library). When you run client = OpenAI(), you are building a real, usable object—the Instance—based on that blueprint.
+A Simple Analogy: The Cookie Cutter
+The Class (Blueprint): This is the cookie cutter. It defines the shape, but you can't eat it.
+The Instance (Object): This is the actual cookie you just baked. It has the shape of the cutter, but it exists in the real world and you can actually use (eat) it.
