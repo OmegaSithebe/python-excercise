@@ -129,6 +129,13 @@ api_key = os.getenv('OPENAI_API_KEY')
 if not api_key:
     raise ValueError("api_key not found, please check naming or the .env file")
 
+# Initializing the OpenAI client object gateway access for python scripts to communicate with OpenAI server's
+client = OpenAI(api_key=api_key)
+# This line of code is initializing the OpenAI client object, which acts as the main gateway for your Python script to communicate with OpenAI's servers. 
+# Here is exactly what is happening during this line:
+# Object Creation: You are creating an "instance" of the OpenAI class. This object, which you've named client, stores all the settings needed to make requests later.
+
+
 message_listing = """
     Beautiful 3-bedroom apartment for sale in New York.
     This modern apartment is listed at $750,000
@@ -204,3 +211,30 @@ def get_response(message, function):
     return response.choices[0].message.tool_calls[0].function.arguments
 
 print(get_response(message_listing, function_definition))
+
+
+# Function calling (actually a python schema called) & get_reponse function
+
+# This is the "bridge" between unstructured text (like a real estate ad) and structured data (like a database entry).
+# Here is how they interconnect:
+## 1. The "Blueprint" (function_definition)
+# This list isn't an actual Python function that runs code; it is a JSON Schema. It acts as a set of instructions for the AI.
+# * It tells the AI: "If you see information about a house, I want it formatted exactly into these four keys: house_type, location, price, and bedrooms."
+# * The required list ensures the AI doesn't skip any details you need.
+
+## 2. The "Hand-off" (get_response)
+# When you call get_response(message_listing, function_definition), you are passing that blueprint into the tools parameter of the API call.
+# * The Logic: The AI reads your message_listing, looks at the function_definition, and realizes, "Hey, I should use the extract_property_info tool to organize this text."
+# * tool_choice='auto': This gives the AI permission to switch from "chat mode" to "data extraction mode."
+
+## 3. The "Extraction" (The return line)
+# This is the most technical part. The AI doesn't return a simple string; it returns a complex object.
+# * response.choices[0]: Grabs the first answer from the AI.
+# * .message.tool_calls[0]: Finds the first "tool" the AI decided to use.
+# * .function.arguments: This pulls out the final result—a JSON string containing the extracted data (e.g., {"house_type": "Apartment", "location": "London" ...}).
+
+## The Big Picture
+#    1. Input: Messy text (message_listing) + Instructions (function_definition).
+#    2. Process: The AI reads both and "fills in the blanks" of your blueprint.
+#    3. Output: A clean, structured string that your code can easily save to a spreadsheet or database.
+
