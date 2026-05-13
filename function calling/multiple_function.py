@@ -342,3 +342,7 @@ def get_response(messages, function_definition):
 response = get_response(messages, function_definition)
 
 print(response)
+
+
+
+
