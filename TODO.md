@@ -1,8 +1,8 @@
-# Fix Transformers Summarization Error in textSummary.py
-
-## Steps:
-- [x] 1. Transform textSummary.py to manual text2text-generation (AutoTokenizer + AutoModelForSeq2SeqLM) ✅
-- [x] 2. Test: Run textSummary.py to confirm no KeyError and summary prints ✅
-- [x] 3. Verify: Check OpenAI cost calculation works ✅
-- [x] Complete: Task done ✅
+# TODO
+- [ ] Refactor `embeddings/world_embedding.py` for readability
+- [ ] Keep behavior to **print output only** (no plotting)
+- [ ] Remove duplicate imports / duplicate `load_dotenv()` / repeated client setup
+- [ ] Wrap logic into functions + `main()` guard
+- [ ] Make missing `OPENAI_API_KEY` error explicit
+- [ ] Run `python embeddings/world_embedding.py` to confirm output still works
 
