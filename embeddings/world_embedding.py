@@ -530,9 +530,52 @@ print("Created embeddings for product short_description fields.")
 # This allows us to compare sentences by meaning instead of exact words, enabling smarter search and recommendations."
 
 # Semantic search is an AI-powered technique that understands the contextual meaning and intent behind a user's query, rather than just matching exact keywords. It uses Natural Language Processing (NLP) and vector embeddings to grasp the relationship between words, resulting in more relevant, accurate search results, even if query terms don't match the content.
-# Key Aspects of Semantic SearchIntent Interpretation: Analyzes what the user actually wants (e.g., to purchase vs. to inform) rather than just what they typed.Context Awareness: Considers location, search history, and word relationships (e.g., understanding "football" means "soccer" in the USA).Vector Embeddings: Transforms text into numerical vectors, mapping them into a space where similar meanings are clustered together for comparison.Beyond Keywords: Unlike traditional search (e.g., SQL LIKE or basic Lucene search), it moves beyond exact term matching to conceptual searching
+# Key Aspects of Semantic SearchIntent Interpretation: Analyzes what the user actually wants (e.g., to purchase vs. to inform) rather than just what they typed.Context Awareness: Considers location, search history, and word relationships (e.g., understanding "football" means "soccer" in the USA).Vector Embeddings: Transforms text into numerical vectors, mapping them into a space where similar meanings are clustered together for comparison.Beyond Keywords: Unlike traditional search (e.g., SQL LIKE or basic Lucene search), it moves beyond exact term matching to conceptual searching.
 # How It WorksEmbedding: The system converts text data (documents, queries) into vector embeddings using machine learning models.Indexing: These vectors are stored and indexed for fast retrieval, often using vector databases.Similarity Search: When a query is made, it is also converted into a vector, and the system finds the closest vectors (most relevant documents) in the vector space using techniques like k-nearest neighbor (kNN)Semantic search is an AI-powered technique that understands the contextual meaning and intent behind a user's query, rather than just matching exact keywords. It uses Natural Language Processing (NLP) and vector embeddings to grasp the relationship between words, resulting in more relevant, accurate search results, even if query terms don't match the content.
-# Key Aspects of Semantic SearchIntent Interpretation: Analyzes what the user actually wants (e.g., to purchase vs. to inform) rather than just what they typed.Context Awareness: Considers location, search history, and word relationships (e.g., understanding "football" means "soccer" in the USA).Vector Embeddings: Transforms text into numerical vectors, mapping them into a space where similar meanings are clustered together for comparison.Beyond Keywords: Unlike traditional search (e.g., SQL LIKE or basic Lucene search), it moves beyond exact term matching to conceptual searching
-# How It WorksEmbedding: The system converts text data (documents, queries) into vector embeddings using machine learning models.Indexing: These vectors are stored and indexed for fast retrieval, often using vector databases.Similarity Search: When a query is made, it is also converted into a vector, and the system finds the closest vectors (most relevant documents) in the vector space using techniques like k-nearest neighbor (kNN)
+# Key Aspects of Semantic SearchIntent Interpretation: Analyzes what the user actually wants (e.g., to purchase vs. to inform) rather than just what they typed.Context Awareness: Considers location, search history, and word relationships (e.g., understanding "football" means "soccer" in the USA).Vector Embeddings: Transforms text into numerical vectors, mapping them into a space where similar meanings are clustered together for comparison.Beyond Keywords: Unlike traditional search (e.g., SQL LIKE or basic Lucene search), it moves beyond exact term matching to conceptual searching.
+# How It WorksEmbedding: The system converts text data (documents, queries) into vector embeddings using machine learning models.Indexing: These vectors are stored and indexed for fast retrieval, often using vector databases.Similarity Search: When a query is made, it is also converted into a vector, and the system finds the closest vectors (most relevant documents) in the vector space using techniques like k-nearest neighbor (kNN).
 
+
+# 6. Storing Embeddings in the Dataset
+# Now we add each embedding back into the **articles dataset**.
+# We use **enumerate()** to match the index.
+
+# # 7. Embedding Vector Length
+# One important property of OpenAI embedding models:
+# The vector length is **always the same**, regardless of input size.
+
+# 8. Understanding High-Dimensional Vector Space
+# Each embedding is a point in **1536-dimensional space**.
+# But humans cannot visualize **1536 dimensions**.
+# So we reduce it to **2 dimensions** for visualization.
+# This process is called **Dimensionality Reduction**.
+
+# 9. Dimensionality Reduction
+# Dimensionality reduction converts:
+# So we can plot it on a **2D graph**.
+# Many techniques exist:
+# - PCA
+# - UMAP
+# - t-SNE
+# Today we use **t-SNE**.
+
+# 10. What is t-SNE?
+# t-SNE stands for:
+# **t-distributed Stochastic Neighbor Embedding**
+# Purpose:
+# - Reduce high dimensional vectors
+# - Preserve **similarity relationships**
+# - Allow **visualization**
+# Important note:
+# Some information is lost during reduction, so it should be used mainly for **visualization**.
+
+# 14. Key Takeaways
+# Today we learned:
+# 1. How to embed **multiple inputs**
+# 2. How to **store embeddings in datasets**
+# 3. That embeddings always have **fixed vector length (1536)**
+# 4. How to reduce dimensions using **t-SNE**
+# 5. How to **visualize embeddings**
+# Important concept:
+# Embeddings map **text with similar meaning closer together in vector space**.
 
